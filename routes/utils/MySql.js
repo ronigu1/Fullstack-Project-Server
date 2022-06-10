@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 require("dotenv").config();
-
+const file_path = "./sql scripts/CreateDB.sql";
 
 const config = {
   connectionLimit: 4,
@@ -9,6 +9,24 @@ const config = {
   password: process.env.DBpass,//database pass
   database: process.env.database//database name
 }
+
+// const Runner = require('run-my-sql-file');
+
+// Runner.connectionOptions({
+//   host: process.env.host,//"localhost"
+//   user: process.env.user,//"root"
+//   password: process.env.DBpass,//database pass
+//   database: process.env.database//database name
+// });
+
+// Runner.runFile(file_path, (err)=>{
+//   if(err){
+//      console.log(err);
+//   } else {
+//      console.log("Script sucessfully executed!");
+//   }
+// });
+
 const pool = new mysql.createPool(config);
 
 const connection = () => {
@@ -43,6 +61,7 @@ const query = (sql, binding) => {
     });
   });
 };
+
 module.exports = { pool, connection, query };
 
 

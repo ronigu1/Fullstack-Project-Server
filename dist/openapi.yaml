@@ -278,8 +278,8 @@ components:
     RecipePreview:
       required:
       - fullRecipe
-      - glutenFree
       - id
+      - glutenFree
       - image
       - popularity
       - readyInMinutes
@@ -344,7 +344,7 @@ components:
         servings:
           type: integer
           description: number of of serves recipe produces
-        Instructions:
+        instructions:
           type: string
           description: recipe instructions
     RecipeIngredients:
@@ -372,12 +372,12 @@ components:
           example: 1 cup
     User:
       required:
-      - country
+      - username
       - email
+      - password
+      - country      
       - firstname
       - lastname
-      - password
-      - username
       type: object
       properties:
         username:
@@ -386,6 +386,22 @@ components:
           type: string
           description: username must conatain between 3 to 8 letters only
           example: zoey101
+        email:
+          pattern: email
+          type: string
+          description: user's email
+          example: my_name12@gmail.com
+        password:
+          maxLength: 10
+          minLength: 5
+          type: string
+          description: password conatins between 5 to 10 chars, at least one of them is a number and a special char
+          format: password
+          example: my_name@12
+        country:
+          type: string
+          description: user's country
+          example: Israel
         firstname:
           type: string
           description: user's first name
@@ -394,22 +410,6 @@ components:
           type: string
           description: user's last name
           example: my_last_name
-        country:
-          type: string
-          description: user's country
-          example: Israel
-        password:
-          maxLength: 10
-          minLength: 5
-          type: string
-          description: password conatins between 5 to 10 chars, at least one of them is a number and a special char
-          format: password
-          example: my_name@12
-        email:
-          pattern: email
-          type: string
-          description: user's email
-          example: my_name12@gmail.com
         myRecipes:
           type: array
           description: user's personal recipes
@@ -422,11 +422,18 @@ components:
             type: string
             description: Recipe's id
         watchedRecipes:
-          type: array
-          description: user's watched recipes
-          items:
-            type: string
-            description: Recipe's id
+          type: object
+          description: user's 3 last watched recipe's id
+          properties:
+            recipeId1:
+              type: string
+              example: '12345'
+            recipeId2:
+              type: string
+              example: '12346'
+            recipeId3:
+              type: string
+              example: '12347'
         familyRecipes:
           type: array
           description: user's family recipes
