@@ -36,7 +36,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/registerScheme'
         required: true
       responses:
         "201":
@@ -45,6 +45,7 @@ paths:
           description: Missing Parameters
         "409":
           description: Username alredy exist in the system
+      security: []
   /login:
     post:
       tags:
@@ -68,8 +69,16 @@ paths:
               schema:
                 type: string
                 example: session=87s97sdhgf279293f8w0e9
+          content:
+            application/json:
+              schema:
+                type: object
+                example: 
+                  message: dsafdsgbjjvsfd.rasr$13fdsafe5ds.af3sfdhghgfhfdj
+                  success: "true"
         "401":
           description: Authentication failed
+      security: []
   /logout:
     post:
       tags:
@@ -78,6 +87,8 @@ paths:
       responses:
         "200":
           description: the user has ben successfully logged out
+      security:
+      - cookieAuth: []
   /users/favorites:
     get:
       tags:
@@ -184,7 +195,7 @@ paths:
         in: path
         description: string to search
         required: true
-        style: form
+        style: simple
         explode: false
         schema:
           type: string
@@ -193,7 +204,7 @@ paths:
         in: path
         description: the size of the returned list
         required: true
-        style: form
+        style: simple
         explode: true
         schema:
           type: integer
@@ -365,14 +376,14 @@ components:
           pattern: email
           type: string
           description: user's email
-          example: my_name12@gmail.com
+          example: zoey101@gmail.com
         password:
           maxLength: 10
           minLength: 5
           type: string
           description: password conatins between 5 to 10 chars, at least one of them is a number and a special char
           format: password
-          example: my_name@12
+          example: zoey101@12
         country:
           type: string
           description: user's country
@@ -380,11 +391,11 @@ components:
         firstname:
           type: string
           description: user's first name
-          example: my_first_name
+          example: zoey
         lastname:
           type: string
           description: user's last name
-          example: my_last_name
+          example: brooks
         myRecipes:
           type: array
           description: user's personal recipes
@@ -414,6 +425,13 @@ components:
           description: user's family recipes
           items:
             $ref: '#/components/schemas/RecipePreview'
+    users_favorites_body:
+      type: object
+      properties:
+        reciepeId:
+          type: string
+          description: reciepe's id which the user saved
+          example: "716429"
     LoginScheme:
       type: object
       properties:
@@ -422,23 +440,57 @@ components:
           minLength: 3
           type: string
           description: username conatins letters only
-          example: tomervar
+          example: zoey101
         password:
           maxLength: 10
           minLength: 5
           type: string
           description: password conatins at least one number and one special char
           format: password
-          example: hodayat@123
-    users_favorites_body:
+          example: zoey101@12
+    registerScheme:
+      required:
+      - username
+      - email
+      - password
+      - country      
+      - firstname
+      - lastname
       type: object
       properties:
-        reciepeId:
+        username:
+          maxLength: 8
+          minLength: 3
           type: string
-          description: reciepe's id which the user saved
-          example: "716429"
+          description: username must conatain between 3 to 8 letters only
+          example: user_name
+        email:
+          pattern: email
+          type: string
+          description: user's email
+          example: user_name@gmail.com
+        password:
+          maxLength: 10
+          minLength: 5
+          type: string
+          description: password conatins between 5 to 10 chars, at least one of them is a number and a special char
+          format: password
+          example: user_pass@12
+        country:
+          type: string
+          description: user's country
+          example: Israel
+        firstname:
+          type: string
+          description: user's first name
+          example: user_firstname
+        lastname:
+          type: string
+          description: user's last name
+          example: user_lastname
   securitySchemes:
     cookieAuth:
       type: apiKey
+      description: 'Session key to identify a user session.'
       name: session
       in: cookie

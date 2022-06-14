@@ -1,4 +1,5 @@
 CREATE TABLE `foodmania`.`users` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(16) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
@@ -6,29 +7,28 @@ CREATE TABLE `foodmania`.`users` (
   `firstname` VARCHAR(45) NOT NULL,
   `lastname` VARCHAR(45) NOT NULL,
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`username`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE);
+  PRIMARY KEY (`user_id`));
 
-CREATE TABLE `foodmania`.`users_watched_recipes` (
-  `username` VARCHAR(16) NOT NULL,
-  `recipeId1` VARCHAR(45) NOT NULL,
-  `recipeId2` VARCHAR(45) NOT NULL,
-  `recipeId3` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`username`),
-  CONSTRAINT `username`
-    FOREIGN KEY (`username`)
-    REFERENCES `foodmania`.`users` (`username`)
+CREATE TABLE `foodmania`.`WatchedRecipes` (
+  `user_id` INT NOT NULL,
+  `recipe_id_1` VARCHAR(45) NOT NULL,
+  `recipe_id_2` VARCHAR(45) NOT NULL,
+  `recipe_id_3` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  CONSTRAINT `user_id`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `foodmania`.`users` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-CREATE TABLE `foodmania`.`users_favorites` (
-  `username` VARCHAR(16) NOT NULL,
-  `recipeId` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`recipeId`, `username`),
-  INDEX `username_idx` (`username` ASC) VISIBLE,
-  CONSTRAINT `username_f`
-    FOREIGN KEY (`username`)
-    REFERENCES `foodmania`.`users` (`username`)
+CREATE TABLE `foodmania`.`FavoriteRecipes` (
+  `user_id` INT NOT NULL,
+  `recipe_id` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`recipe_id`, `user_id`),
+  INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `user_id_f`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `foodmania`.`users` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -79,22 +79,24 @@ CREATE TABLE `foodmania`.`recipe_ingredient` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-CREATE TABLE `foodmania`.`users_recipes` (
-  `username` VARCHAR(45) NOT NULL,
-  `recipeid` INT NOT NULL,
+CREATE TABLE `foodmania`.`UsersRecipes` (
+  `user_id` INT NOT NULL,
+  `recipe_id` INT NOT NULL,
   `isfamily` BOOLEAN NOT NULL,
-  INDEX `fk_username_idx` (`username` ASC) VISIBLE,
-  INDEX `fk_recipe_idx` (`recipeid` ASC) VISIBLE,
-  CONSTRAINT `fk_username`
-    FOREIGN KEY (`username`)
-    REFERENCES `foodmania`.`users` (`username`)
+  INDEX `fk_user_id_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_recipe_idx` (`recipe_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_id`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `foodmania`.`users` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_recipeid`
-    FOREIGN KEY (`recipeid`)
+  CONSTRAINT `fk_recipe_id`
+    FOREIGN KEY (`recipe_id`)
     REFERENCES `foodmania`.`recipes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+
 
 INSERT INTO foodmania.measure (name) VALUES('CUP'), ('TEASPOON'), ('TABLESPOON'), ('PINCH'), ('gm'), ('ml');
 

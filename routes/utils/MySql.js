@@ -19,11 +19,11 @@ const config = {
 //   database: process.env.database//database name
 // });
 
-// Runner.runFile(file_path, (err)=>{
-//   if(err){
-//      console.log(err);
+// Runner.runFile(file_path, (err) => {
+//   if (err) {
+//     console.log(err);
 //   } else {
-//      console.log("Script sucessfully executed!");
+//     console.log("Script sucessfully executed!");
 //   }
 // });
 
