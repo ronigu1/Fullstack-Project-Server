@@ -157,11 +157,11 @@ paths:
     get:
       tags:
       - Users
-      summary: Return the recipes that were saved by user
-      description: Get an array of recipes that were saved by a specific user
+      summary: Return the recipes that were watched by user
+      description: Get an array of recipes that were watched by a specific user
       responses:
         "200":
-          description: data about the user's favorites recipes returned
+          description: data about the user's watched recipes returned
           content:
             application/json:
               schema:
