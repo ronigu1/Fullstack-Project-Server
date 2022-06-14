@@ -40,7 +40,7 @@ router.get("/random", async (req, res, next) => {
  router.get("/search/query/:searchQuery/amount/:num", async (req, res, next) => {
   const {searchQuery, num} = req.params;
   // set search params
-  let search_params = {}
+  let search_params = {};
   search_params.query = searchQuery;  //search_params = {query: pasta, ..}
   search_params.number = num;
   search_params.instructionsRequired = true;
