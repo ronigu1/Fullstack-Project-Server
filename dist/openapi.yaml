@@ -164,7 +164,7 @@ paths:
           description: user is not authorized
       security:
       - cookieAuth: []
-  /recipes/watchedRecipes:
+  /users/watchedRecipes:
     get:
       tags:
       - Users
@@ -179,6 +179,23 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RecipePreview'
+        "401":
+          description: user is not authorized
+      security:
+      - cookieAuth: []
+    post:
+      tags:
+      - Users
+      summary: Save the last 3 recipes that were watched by user
+      description: Get an array of recipes that were watched by a specific user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_watched_recipes'
+      responses:
+        "200":
+          description: data about the user's watched recipes saved
         "401":
           description: user is not authorized
       security:
@@ -428,10 +445,25 @@ components:
     users_favorites_body:
       type: object
       properties:
-        reciepeId:
+        recipeId:
           type: string
           description: reciepe's id which the user saved
           example: "716429"
+    users_watched_recipes:
+      type: object
+      properties:
+        recipeId1:
+          type: string
+          description: reciepe's id which the user saved
+          example: "716429"
+        recipeId2:
+          type: string
+          description: reciepe's id which the user saved
+          example: "654944"
+        recipeId3:
+          type: string
+          description: reciepe's id which the user saved
+          example: "654905"                  
     LoginScheme:
       type: object
       properties:

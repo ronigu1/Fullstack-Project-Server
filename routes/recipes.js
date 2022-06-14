@@ -10,8 +10,9 @@ router.get("/", (req, res) => res.send("im here"));
  * This path returns preview detailes abput 3 recipes
  */
 router.get("/random", async (req, res, next) => {
+  const user_id = req.session.user_id;
   try {
-    let random_3_recipe = await recipes_utils.getRandomThreeRecipes();
+    let random_3_recipe = await recipes_utils.getRandomThreeRecipes(user_id);
     res.send(random_3_recipe);
   } catch (error) {
     next(error);
@@ -21,7 +22,7 @@ router.get("/random", async (req, res, next) => {
 /**
  * This path returns a full details of a recipe by its id
  */
- router.get("/:recipeId", async (req, res, next) => {
+router.get("/:recipeId", async (req, res, next) => {
   try {
     const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
     res.send(recipe);
@@ -37,8 +38,8 @@ router.get("/random", async (req, res, next) => {
  * Result will be preview recipes.
  */
 //"/search/query/:searchQuery = query(RecipeName or FoodName) /amount/:num ? Cusine='' & diet=''.'' & intolerance='' "
- router.get("/search/query/:searchQuery/amount/:num", async (req, res, next) => {
-  const {searchQuery, num} = req.params;
+router.get("/search/query/:searchQuery/amount/:num", async (req, res, next) => {
+  const { searchQuery, num } = req.params;
   // set search params
   let search_params = {};
   search_params.query = searchQuery;  //search_params = {query: pasta, ..}
@@ -52,9 +53,10 @@ router.get("/random", async (req, res, next) => {
   }
   //check if query params exists (cuisine / diet / intolerances) and add them to search_params
 
-  try{
+  try {
+    const user_id = req.session.user_id;
     search_util.extractQueryParams(req.query, search_params)
-    const recipes = await search_util.searchForRecipes(search_params)
+    const recipes = await search_util.searchForRecipes(user_id, search_params)
     res.send(recipes)
   } catch (error) {
     next(error);
