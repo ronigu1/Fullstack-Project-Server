@@ -88,3 +88,33 @@ router.get('/watchedRecipes', async (req, res, next) => {
   }
 });
 module.exports = router;
+
+
+/**
+ * This path saves this user recipe in the user recipe list of the logged-in user
+ */
+router.post('/myRecipes', async (req, res, next) => {
+  try {
+    // const user_id = req.session.user_id;
+    // const title = req.body.title;
+    // const image = req.body.image;
+    // const readyInMinutes = req.body.readyInMinutes;
+    // const popularity = req.body.popularity;
+    // const vegan = req.body.vegan;
+    // const vegetarian = req.body.vegetarian;
+    // const glutenFree = req.body.glutenFree;
+    // const recipeIngridiens =
+    // await user_utils.addUserRecipe(req.body.user_id, user_id);
+    res.status(200).send("The Recipes successfully saved as last watched");
+  } catch (error) {
+    next(error);
+  }
+})
+
+router.get('/myRecipes', async (req, res, next) => {
+  try {
+    res.status(200).send("The Recipes successfully saved as last watched");
+  } catch (error) {
+    next(error);
+  }
+})

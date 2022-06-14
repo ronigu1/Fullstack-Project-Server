@@ -63,5 +63,6 @@ router.get("/search/query/:searchQuery/amount/:num", async (req, res, next) => {
   }
 });
 
+
 module.exports = router;
 
