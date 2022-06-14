@@ -86,7 +86,7 @@ function extarctRecipesPreviewDetails(recipes_info){
 async function getRandomRecipes() {
     const response = await axios.get(`${api_domain}/random`, {
         params: {
-            number : 5,
+            number : 12,
             apiKey: process.env.spooncular_apiKey
         }
     });

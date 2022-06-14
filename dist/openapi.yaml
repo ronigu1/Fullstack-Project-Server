@@ -172,7 +172,7 @@ paths:
           description: user is not authorized
       security:
       - cookieAuth: []
-  /recipes/search/query/{searchQuery}/amount/{num}}:
+  /recipes/search/query/{searchQuery}/amount/{num}:
     get:
       tags:
       - Recipes
