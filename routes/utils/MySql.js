@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 require("dotenv").config();
-const file_path = "./sql scripts/CreateDB.sql";
+const file_path = "./sql scripts/CreateDBTables.sql";
 
 const config = {
   connectionLimit: 4,
@@ -63,10 +63,3 @@ const query = (sql, binding) => {
 };
 
 module.exports = { pool, connection, query };
-
-
-
-
-
-
-

@@ -16,7 +16,7 @@ router.post("/register", async (req, res, next) => {
       country: req.body.country,
       password: req.body.password,
       email: req.body.email,
-      profilePic: req.body.profilePic
+      // profilePic: req.body.profilePic
     }
     let users = [];
     users = await DButils.execQuery("SELECT username from users");
@@ -55,13 +55,17 @@ router.post("/login", async (req, res, next) => {
     if (!bcrypt.compareSync(req.body.password, user.password)) {
       throw { status: 401, message: "Username or Password incorrect" };
     }
-
+    const res_user = {
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      country: user.country,
+      email: user.email,
+    }
     // Set cookie
     req.session.user_id = user.user_id;
-
-
     // return cookie
-    res.status(200).send({ message: "login succeeded", success: true });
+    res.status(200).send({ message: "login succeeded", success: true, user: res_user});
   } catch (error) {
     next(error);
   }

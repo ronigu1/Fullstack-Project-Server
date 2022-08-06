@@ -24,7 +24,7 @@ router.get("/random", async (req, res, next) => {
  */
 router.get("/:recipeId", async (req, res, next) => {
   try {
-    const recipe = await recipes_utils.getRecipeDetails(req.params.recipeId);
+    const recipe = await recipes_utils.getFullRecipe(req.params.recipeId);
     res.send(recipe);
   } catch (error) {
     next(error);
@@ -45,6 +45,8 @@ router.get("/search/query/:searchQuery/amount/:num", async (req, res, next) => {
   search_params.query = searchQuery;  //search_params = {query: pasta, ..}
   search_params.number = num;
   search_params.instructionsRequired = true;
+  search_params.addRecipeInformation = true;
+  search_params.fillIngredients = true;
   search_params.apiKey = process.env.spooncular_apiKey;
 
   //gives a defult num

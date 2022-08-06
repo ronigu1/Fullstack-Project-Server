@@ -93,27 +93,27 @@ module.exports = router;
 /**
  * This path saves this user recipe in the user recipe list of the logged-in user
  */
-router.post('/myRecipes', async (req, res, next) => {
+router.post('/myrecipes', async (req, res, next) => {
   try {
-    // const user_id = req.session.user_id;
-    // const title = req.body.title;
-    // const image = req.body.image;
-    // const readyInMinutes = req.body.readyInMinutes;
-    // const popularity = req.body.popularity;
-    // const vegan = req.body.vegan;
-    // const vegetarian = req.body.vegetarian;
-    // const glutenFree = req.body.glutenFree;
-    // const recipeIngridiens =
-    // await user_utils.addUserRecipe(req.body.user_id, user_id);
-    res.status(200).send("The Recipes successfully saved as last watched");
+    const user_id = req.session.user_id;
+    const recipeDetails = req.body;
+    await user_utils.addUserRecipe(recipeDetails, user_id);
+    res.status(200).send("The Recipe successfully to user's recipes");
   } catch (error) {
     next(error);
   }
 })
 
-router.get('/myRecipes', async (req, res, next) => {
+router.get('/myrecipes', async (req, res, next) => {
   try {
-    res.status(200).send("The Recipes successfully saved as last watched");
+    const user_id = req.session.user_id;
+    recipes = await user_utils.getUserRecipes(user_id);
+    if (recipes.length == 0){
+      res.sendStatus(404)
+    }
+    else{
+      res.status(200).send(recipes);
+    }
   } catch (error) {
     next(error);
   }

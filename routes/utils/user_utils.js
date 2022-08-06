@@ -18,39 +18,64 @@ async function getLastWatchedRecipes(user_id) {
     return recipes_id[0];
 }
 
-// async function addUserRecipe(recipeDetails, username) {
-//     const {
-//         title,
-//         image,
-//         readyInMinutes,
-//         glutenFree,
-//         isVegaterian,
-//         ingredients,
-//         instructions,
-//         servings,
-//         summary
-//     } = recipeDetails
+async function addUserRecipe(recipeDetails, user_id) {
+    const {
+    title,
+    readyInMinutes,
+    image,
+    popularity,
+    vegan,
+    vegetarian,
+    glutenFree,
+    FullRecipe
+    // servings,
+    // instructions,
+    // ingredients
+    } = recipeDetails
+    // const ingredients = JSON.stringify(ingredientsRec) 
+    const servings = FullRecipe.servings;
+    const instructions = FullRecipe.instructions;
+    const ingredients = JSON.stringify(FullRecipe.ingredients);
+    const veganBit = vegan==='true' ? 1 : 0;
+    const vegetarianBit = vegetarian==='true' ? 1 : 0;
+    const glutenFreeBit = glutenFree==='true' ? 1 : 0;
+    //Add new recipe to DB
+    await DButils.execQuery(`INSERT INTO recipes (user_id, title, image, readyInMinutes, popularity, vegan, vegetarian, glutenFree, instructions, ingredients, servings) VALUES ('${user_id}', '${title}', '${image}', '${readyInMinutes}', '${popularity}', '${veganBit}', '${vegetarianBit}', '${glutenFreeBit}', '${instructions}', '${ingredients}', '${servings}')`)
+}
 
-//     //Add new recipe to DB
-//     pool = await poolPromise
-//     result = await pool.request()
-//         .input("user_id", sql.VarChar(10), user_id)
-//         .input("title", sql.VarChar(4000), title)
-//         .input("image", sql.VarChar(4000), image)
-//         .input("readyInMinutes", sql.BigInt, readyInMinutes)
-//         .input("aggregateLikes", sql.BigInt, 0)
-//         .input("glutenFree", sql.Bit, glutenFree === 'true' ? 1 : 0)
-//         .input("vegetarian", sql.Bit, isVegaterian === 'true' ? 1 : 0)
-//         .input("ingredients", sql.NVarChar('max'), JSON.stringify(ingredients))
-//         .input("instructions", sql.NVarChar('max'), JSON.stringify(instructions))
-//         .input("servings", sql.NVarChar('max'), servings)
-//         .input("summary", sql.NVarChar(4000), summary)
-//         .execute("insertRecipe").then(function (recordSet) {
-//             res.status(200).send({ message: 'Succsefully created a new recipe', sucess: 'true' })
-//         })
-// }
+async function getUserRecipes(user_id) {
+    const user_recipes = await DButils.execQuery(`select * from recipes where user_id='${user_id}'`)
+    let recipes =[]
+    user_recipes.map((userRecipe) => recipes.push(createUserRecipe(userRecipe)))
+    return recipes;
+}
+
+function createUserRecipe(userRecipe) {
+    let recipe = {};
+    recipe.id = userRecipe.id;
+    recipe.user_id = userRecipe.user_id;
+    recipe.title = userRecipe.title;
+    recipe.readyInMinutes = userRecipe.readyInMinutes;
+    recipe.image = userRecipe.image;
+    recipe.popularity = userRecipe.popularity;
+    recipe.glutenFree = userRecipe.glutenFree==1 ? true : false;
+    recipe.vegetarian = userRecipe.vegetarian==1 ? true : false;
+    recipe.vegan = userRecipe.vegan==1 ? true : false;
+    let servings = userRecipe.servings==1 ? true : false;
+    let instructions = userRecipe.instructions;
+    let ingredients =JSON.parse(userRecipe.ingredients); 
+    let FullRecipe = {
+        servings: servings,
+        instructions: instructions,
+        ingredients: ingredients
+    }
+    recipe.FullRecipe = FullRecipe;
+    return recipe;
+}
 
 exports.getLastWatchedRecipes = getLastWatchedRecipes;
 exports.markAsLastWatched = markAsLastWatched;
 exports.markAsFavorite = markAsFavorite;
 exports.getFavoriteRecipes = getFavoriteRecipes;
+exports.addUserRecipe = addUserRecipe;
+exports.getUserRecipes = getUserRecipes;
