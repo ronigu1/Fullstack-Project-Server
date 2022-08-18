@@ -34,7 +34,7 @@ async function getFullRecipe(recipe_id) {
     let recipe_info = await getRecipeInformation(recipe_id);
     let ingredients = [];
     let { id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree, servings, instructions } = recipe_info.data;
-    recipe_info.extendedIngredients.map((ingredient) =>{
+    recipe_info.data.extendedIngredients.map((ingredient) =>{
         let recipeIngridient = {'name':ingredient.name, 'amount': ingredient.amount, 'unit': ingredient.unit}
         ingredients.push(recipeIngridient)
     })

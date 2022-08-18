@@ -32,6 +32,17 @@ router.post("/register", async (req, res, next) => {
     await DButils.execQuery(
       `INSERT INTO users (username, email, password, country, firstname, lastname) VALUES ('${user_details.username}', '${user_details.email}', '${hash_password}', '${user_details.country}', '${user_details.firstname}', '${user_details.lastname}')`
     )
+
+    // GET the user from db
+    const user = (
+      await DButils.execQuery(
+        `SELECT * FROM users WHERE username = '${user_details.username}'`
+      )
+    )[0];
+    
+    // add watched recepies informaion
+    await DButils.execQuery(`INSERT INTO watchedrecipes (user_id, recipe_id_1, recipe_id_2, recipe_id_3) VALUES ('${user.user_id}', NULL, NULL, NULL)`)
+
     res.status(201).send({ message: "user created", success: true });
   } catch (error) {
     next(error);

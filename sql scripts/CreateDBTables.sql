@@ -13,9 +13,9 @@ CREATE TABLE `foodmania`.`users` (
 
 CREATE TABLE `foodmania`.`watchedrecipes` (
   `user_id` INT NOT NULL,
-  `recipe_id_1` VARCHAR(45) NOT NULL,
-  `recipe_id_2` VARCHAR(45) NOT NULL,
-  `recipe_id_3` VARCHAR(45) NOT NULL,
+  `recipe_id_1` VARCHAR(45),
+  `recipe_id_2` VARCHAR(45),
+  `recipe_id_3` VARCHAR(45),
   PRIMARY KEY (`user_id`),
   CONSTRAINT `user_id`
     FOREIGN KEY (`user_id`)

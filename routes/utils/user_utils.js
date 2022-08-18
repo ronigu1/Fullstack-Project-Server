@@ -10,7 +10,10 @@ async function getFavoriteRecipes(user_id) {
 }
 
 async function markAsLastWatched(user_id, recipe_id_1, recipe_id_2, recipe_id_3) {
-    await DButils.execQuery(`INSERT INTO watchedrecipes (user_id, recipe_id_1, recipe_id_2, recipe_id_3) VALUES ('${user_id}', '${recipe_id_1}', '${recipe_id_2}', '${recipe_id_3}')`)
+    // await DButils.execQuery(`INSERT INTO watchedrecipes (user_id, recipe_id_1, recipe_id_2, recipe_id_3) VALUES ('${user_id}', '${recipe_id_1}', '${recipe_id_2}', '${recipe_id_3}')`)
+    await DButils.execQuery(`INSERT INTO watchedrecipes (user_id, recipe_id_1, recipe_id_2, recipe_id_3) 
+                            VALUES ('${user_id}', '${recipe_id_1}', '${recipe_id_2}', '${recipe_id_3}') 
+                            ON DUPLICATE KEY UPDATE recipe_id_1='${recipe_id_1}', recipe_id_2='${recipe_id_2}', recipe_id_3='${recipe_id_3}'`)
 }
 
 async function getLastWatchedRecipes(user_id) {
