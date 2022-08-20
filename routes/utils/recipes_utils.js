@@ -110,6 +110,7 @@ async function extarctRecipesPreviewDetails(user_id, recipes_info) {
 }
 
 async function getRandomRecipes() {
+    // rand leeter
     const response = await axios.get(`${api_domain}/random`, {
         params: {
             number: 3,
