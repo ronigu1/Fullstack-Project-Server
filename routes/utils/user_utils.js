@@ -4,6 +4,12 @@ async function markAsFavorite(user_id, recipe_id) {
     await DButils.execQuery(`INSERT INTO FavoriteRecipes (user_id, recipe_id) VALUES ('${user_id}', '${recipe_id}')`)
 }
 
+async function removeFavorite(user_id, recipe_id) {
+    console.log("deleting recepie=" + recipe_id + "of user=" + user_id)
+    await DButils.execQuery(`DELETE FROM FavoriteRecipes WHERE (user_id='${user_id}') and (recipe_id='${recipe_id}')`)
+}
+
+
 async function getFavoriteRecipes(user_id) {
     const recipes_id = await DButils.execQuery(`select recipe_id from FavoriteRecipes where user_id='${user_id}'`)
     return recipes_id;
@@ -82,3 +88,4 @@ exports.markAsFavorite = markAsFavorite;
 exports.getFavoriteRecipes = getFavoriteRecipes;
 exports.addUserRecipe = addUserRecipe;
 exports.getUserRecipes = getUserRecipes;
+exports.removeFavorite = removeFavorite;
