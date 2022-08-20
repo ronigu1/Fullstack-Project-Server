@@ -33,8 +33,17 @@ async function searchForRecipes(user_id, search_params) {
     return recipes_utils.extarctRecipesPreviewDetails(user_id, recipesArr);
 }
 
+async function getRandomThreeRecipes(user_id,search_params) {
+    let search_pool = await getSearchResult(search_params);
+    let random_recipes = search_pool.data.results;
+    let random_range = random_recipes.length - 3;
+    let random_first_num = Math.floor(Math.random() * random_range);
+    return recipes_utils.extarctRecipesPreviewDetails(user_id, [random_recipes[random_first_num], random_recipes[random_first_num+1], random_recipes[random_first_num+2]]);
+}
+
 exports.extractQueryParams = extractQueryParams;
 exports.searchForRecipes = searchForRecipes;
+exports.getRandomThreeRecipes = getRandomThreeRecipes;
 exports.getSearchResult = getSearchResult;
 
 

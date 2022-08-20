@@ -2,6 +2,9 @@ const axios = require("axios");
 const { Rabbit } = require("crypto-js");
 const api_domain = "https://api.spoonacular.com/recipes";
 const user_utils = require("./user_utils");
+const search_util = require("./search_util");
+
+// const alphabet = "abcdefghijklmnopqrstuvwxyz";
 /**
  * Get recipes list from spooncular response and extract the relevant recipe data for preview
  * @param {*} recipes_info 
@@ -109,41 +112,43 @@ async function extarctRecipesPreviewDetails(user_id, recipes_info) {
     })
 }
 
-async function getRandomRecipes() {
-    // rand leeter
-    const response = await axios.get(`${api_domain}/random`, {
-        params: {
-            number: 3,
-            apiKey: process.env.spooncular_apiKey
-        }
-    });
-    return response;
-}
+// async function getRandomRecipes() {
+//     const response = await axios.get(`${api_domain}/random`, {
+//         params: {
+//             number: 3,
+//             apiKey: process.env.spooncular_apiKey
+//         }
+//     });
+//     return response;
+// }
 
 
-async function getRandomThreeRecipes(user_id) {
-    // let random_pool = await getRandomRecipes();
-    // let filterd_random_pool = random_pool.data.recipes.filter((random) => (random.instructions != "") && (random.image && random.title
-    //     && random.readyInMinutes && random.servings && random.extendedIngredients && random.servings && random.aggregateLikes
-    //     && random.vegan && random.vegetarian && random.glutenFree));
-    // if (filterd_random_pool.length < 3) {
-    //     return getRandomThreeRecipes(user_id);
-    // }
-    // return extarctRecipesPreviewDetails(user_id, [filterd_random_pool[0], filterd_random_pool[1], filterd_random_pool[2]]);
-    // let random_3_recipe = [];
-    // while (random_3_recipe.length<3){
-    //     let rand_recepie = getRandomRecipe()
-    //     if (rand_recepie.instructions !=="" && rand_recepie.image && rand_recepie.title
-    //     && rand_recepie.readyInMinutes && rand_recepie.servings && rand_recepie.extendedIngredients && rand_recepie.servings && rand_recepie.aggregateLikes
-    //     && rand_recepie.vegan && rand_recepie.vegetarian && rand_recepie.glutenFree){
-    //         random_3_recipe.push(rand_recepie)
-    //     }
-    // } 
-    let data = await getRandomRecipes();
+// async function getRandomThreeRecipes(user_id,search_params) {
+//     // let random_pool = await getRandomRecipes();
+//     // let filterd_random_pool = random_pool.data.recipes.filter((random) => (random.instructions != "") && (random.image && random.title
+//     //     && random.readyInMinutes && random.servings && random.extendedIngredients && random.servings && random.aggregateLikes
+//     //     && random.vegan && random.vegetarian && random.glutenFree));
+//     // if (filterd_random_pool.length < 3) {
+//     //     return getRandomThreeRecipes(user_id);
+//     // }
+//     // return extarctRecipesPreviewDetails(user_id, [filterd_random_pool[0], filterd_random_pool[1], filterd_random_pool[2]]);
+//     // let random_3_recipe = [];
+//     // while (random_3_recipe.length<3){
+//     //     let rand_recepie = getRandomRecipe()
+//     //     if (rand_recepie.instructions !=="" && rand_recepie.image && rand_recepie.title
+//     //     && rand_recepie.readyInMinutes && rand_recepie.servings && rand_recepie.extendedIngredients && rand_recepie.servings && rand_recepie.aggregateLikes
+//     //     && rand_recepie.vegan && rand_recepie.vegetarian && rand_recepie.glutenFree){
+//     //         random_3_recipe.push(rand_recepie)
+//     //     }
+//     // } 
+//     // let data = await getRandomRecipes();
+//     let data = await search_util.getSearchResult(search_params);
+//     let random_recipes = data.data.results;
+//     let random_range = random_recipes.length;
+//     let random_first_num = Math.floor(Math.random() * random_range-3);
 
-    let random_3_recipes = data.data.recipes;
-    return extarctRecipesPreviewDetails(user_id, [random_3_recipes[0], random_3_recipes[1], random_3_recipes[2]]);
-}
+//     return extarctRecipesPreviewDetails(user_id, [random_recipes[random_first_num], random_recipes[random_first_num+1], random_recipes[random_first_num+2]]);
+// }
 
 //for favorites
 async function getRecipesPreview(user_id, recipes_id_array) {
@@ -159,7 +164,7 @@ async function getRecipesPreview(user_id, recipes_id_array) {
 
 exports.getFullRecipe = getFullRecipe;
 exports.getRecipesPreview = getRecipesPreview;
-exports.getRandomThreeRecipes = getRandomThreeRecipes;
+// exports.getRandomThreeRecipes = getRandomThreeRecipes;
 exports.extarctRecipesPreviewDetails = extarctRecipesPreviewDetails;
 
 
