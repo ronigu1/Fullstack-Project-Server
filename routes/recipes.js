@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 const recipes_utils = require("./utils/recipes_utils");
 const search_util = require("./utils/search_util");
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
 
 router.get("/", (req, res) => res.send("im here"));
 
@@ -10,10 +12,18 @@ router.get("/", (req, res) => res.send("im here"));
  * This path returns preview detailes abput 3 recipes
  */
 router.get("/random", async (req, res, next) => {
-  const user_id = req.session.user_id;
+  let randomChar = alphabet[Math.floor(Math.random() * alphabet.length)]
+  let search_params = {};
+  search_params.query = randomChar;  //search_params = {query: a/b/c..../z, ..}
+  search_params.number = 20;
+  search_params.instructionsRequired = true;
+  search_params.addRecipeInformation = true;
+  search_params.fillIngredients = true;
+  search_params.apiKey = process.env.spooncular_apiKey;
   try {
-    let random_3_recipe = await recipes_utils.getRandomThreeRecipes(user_id);
+    const random_3_recipe = await search_util.getRandomThreeRecipes(req.session.user_id, search_params);
     res.send(random_3_recipe);
+
   } catch (error) {
     next(error);
   }
