@@ -87,9 +87,18 @@ router.delete('/favorites/:recipeId', async (req, res, next) => {
 router.post('/watchedRecipes', async (req, res, next) => {
   try {
     const user_id = req.session.user_id;
-    const recipe_id_1 = req.body.recipeId1;
-    const recipe_id_2 = req.body.recipeId2;
-    const recipe_id_3 = req.body.recipeId3;
+    var recipe_id_1 = null;
+    var recipe_id_2 = null;
+    var recipe_id_3 = null;
+    if(req.body.recipeId1)
+      recipe_id_1 = req.body.recipeId1
+    if(req.body.recipeId2)
+      recipe_id_2 = req.body.recipeId2      
+    if(req.body.recipeId3)
+      recipe_id_3 = req.body.recipeId3      
+    // const recipe_id_1 = req.body.recipeId1;
+    // const recipe_id_2 = req.body.recipeId2;
+    // const recipe_id_3 = req.body.recipeId3;
     await user_utils.markAsLastWatched(user_id, recipe_id_1, recipe_id_2, recipe_id_3);
     res.status(200).send("The Recipes successfully saved as last watched");
   } catch (error) {
@@ -105,11 +114,11 @@ router.get('/watchedRecipes', async (req, res, next) => {
     const user_id = req.session.user_id;
     const lastWatched = await user_utils.getLastWatchedRecipes(user_id);
     let recipes_id_array = [];
-    if (lastWatched.recipe_id_1 != null)
+    if (lastWatched.recipe_id_1 != 'null')
       recipes_id_array.push(lastWatched.recipe_id_1);
-    if (lastWatched.recipe_id_2 != null)
+    if (lastWatched.recipe_id_2 != 'null')
       recipes_id_array.push(lastWatched.recipe_id_2);
-    if (lastWatched.recipe_id_3 != null)
+    if (lastWatched.recipe_id_3 != 'null')
       recipes_id_array.push(lastWatched.recipe_id_3);
     const results = await recipe_utils.getRecipesPreview(user_id, recipes_id_array);
     res.status(200).send(results);

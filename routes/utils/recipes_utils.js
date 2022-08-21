@@ -17,18 +17,19 @@ async function getRecipeInformation(recipe_id) {
         }
     });
 }
-// /**
-//  * Get IngredientsImg
-//  * @param {*} recipes_info 
-//  */
-// async function getIngredientsImg(recipe_id) {
-//     return await axios.get(`${api_domain}/${recipe_id}/ingredientWidget.png`, {
-//         params: {
-//             measure: metric,
-//             apiKey: process.env.spooncular_apiKey
-//         }
-//     });
-// }
+
+async function getRecipeInformationBulk(user_id, recipes_ids) {
+    let recipes = recipes_ids; 
+    let results = await axios.get(`${api_domain}/informationBulk`, {
+        params: {
+            ids: recipes_ids, 
+            includeNutrition: false,
+            apiKey: process.env.spooncular_apiKey
+        }
+    });
+    let recipesArr = results.data
+    return extarctRecipesPreviewDetails(user_id, recipesArr);
+}
 
 /**
  * Get Recipe Full Details acording to recipe_id
@@ -166,6 +167,7 @@ exports.getFullRecipe = getFullRecipe;
 exports.getRecipesPreview = getRecipesPreview;
 // exports.getRandomThreeRecipes = getRandomThreeRecipes;
 exports.extarctRecipesPreviewDetails = extarctRecipesPreviewDetails;
+exports.getRecipeInformationBulk = getRecipeInformationBulk;
 
 
 

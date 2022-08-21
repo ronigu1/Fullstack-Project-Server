@@ -398,6 +398,33 @@ paths:
                 $ref: "#/components/schemas/FullRecipe"
         "404":
           description: Recipe dosent exits
+  /recipes/recipesBulk:
+    get:
+      tags:
+        - Recipes
+      summary: Get a recipes by id from spooncular DB.
+      description: Obtain information about spesific recipes from DB
+      parameters:
+        - name: recipesIds
+          in: query
+          description: The ID's of the recipe
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: string
+            example: "715538,716429"
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecipePreview"
+        "404":
+          description: Recipes dosent exits
 components:
   schemas:
     FamilyRecipe:

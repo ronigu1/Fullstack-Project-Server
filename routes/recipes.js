@@ -4,7 +4,7 @@ const recipes_utils = require("./utils/recipes_utils");
 const search_util = require("./utils/search_util");
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-
+console.log("in /recipes")
 router.get("/", (req, res) => res.send("im here"));
 
 
@@ -32,6 +32,20 @@ router.get("/random", async (req, res, next) => {
 /**
  * This path returns a full details of a recipe by its id
  */
+ router.get("/recipesBulk", async (req, res, next) => {
+  console.log("in recipesBulk");
+  try {
+    const user_id = req.session.user_id;
+    const recipes = await recipes_utils.getRecipeInformationBulk(user_id, req.query.recipesIds);
+    res.send(recipes);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/**
+ * This path returns a full details of a recipe by its id
+ */
 router.get("/:recipeId", async (req, res, next) => {
   try {
     const recipe = await recipes_utils.getFullRecipe(req.params.recipeId);
@@ -40,6 +54,7 @@ router.get("/:recipeId", async (req, res, next) => {
     next(error);
   }
 });
+
 
 
 /**
